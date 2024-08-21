@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <form action="{% url 'posts:post' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset>
+        <label for="image">Image*</label>
+        <br>
+        <input class="form-control-file" type="file" name="image" id="image" required accept=".png, .jpg, .jpeg">
+        <br>
+        <label for="text">Text*</label>
+        <br>
+        <textarea class="form-control" name="text" id="text" rows="10" required></textarea>
+        <br>
+        <input class="btn btn-success" type="submit" value="Share">
+      </fieldset>
+    </form>
+    </div>
+{% endblock content %}
