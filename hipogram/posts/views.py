@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 
-from .models import Post
+from .models import Post, Tag
 
 
 def post_list_view(request):
@@ -14,14 +14,18 @@ def post_list_view(request):
     return render(request, "post_list.html", {'posts': posts})
 
 def create_view(request):
-    return render(request, "create.html")
+    tags = Tag.objects.all()
+    return render(request, "create.html", {'tags': tags})
 
 @login_required
 def post(request):
     post = Post(
         image = request.FILES.get("image"),
         text = request.POST.get("text"),
-        created_by = request.user
+        created_by = request.user,
     )
     post.save()
+    tags = request.POST.getlist("tags")
+    print(tags)
+    post.tags.set(tags)
     return redirect(reverse("posts:list"))

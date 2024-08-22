@@ -13,6 +13,14 @@
         <br>
         <textarea class="form-control" name="text" id="text" rows="10" required></textarea>
         <br>
+        <label for="tags">Tags</label>
+        <br>
+        <select multiple class="form-control" id="tags" name="tags">
+          {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.name }}</option>
+          {% endfor %}
+        </select>
+        <br>
         <input class="btn btn-success" type="submit" value="Share">
       </fieldset>
     </form>
