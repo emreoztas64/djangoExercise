@@ -27,6 +27,38 @@ def tag_list_view(request, tag):
     posts = paginator.get_page(page_number)
     return render(request, "post_list.html", {'posts': posts})
 
+@login_required
+def update_view(request, id):
+    post = Post.objects.get(id=id)
+    tags = Tag.objects.all()
+    if request.user != post.created_by:
+        return redirect(reverse("posts:list"))
+    else:
+        return render(request, "update.html", {'post': post, 'tags': tags})
+    
+
+@login_required
+def edit(request, id):
+    post = Post.objects.get(id=id)
+    if request.user != post.created_by:
+        return redirect(reverse("posts:list"))
+    else:
+        post.text = request.POST.get("text")
+        post.save()
+        tags = request.POST.getlist("tags")
+        post.tags.set(tags)
+        return redirect(reverse("posts:list"))
+    
+@login_required
+def delete(request, id):
+    post = Post.objects.get(id=id)
+    if request.user != post.created_by:
+        return redirect(reverse("posts:list"))
+    else:
+        post.delete()
+        return redirect(reverse("posts:list"))
+    
+
 def create_view(request):
     tags = Tag.objects.all()
     return render(request, "create.html", {'tags': tags})

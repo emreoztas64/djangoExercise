@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <form action="{% url 'posts:edit' post.id %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset>
+        <img class="img-fluid mx-auto d-block" style="max-height:400px" src="{{ post.image.url }}"/>
+        <br>
+        <label for="text">Text*</label>
+        <br>
+        <textarea class="form-control" name="text" id="text" rows="10" required>{{ post.text }}</textarea>
+        <br>
+        <label for="tags">Tags</label>
+        <br>
+        <select multiple class="form-control" id="tags" name="tags">
+          {% for tag in tags %}
+            {% if tag in post.tags.all %}
+                <option value="{{ tag.id }}" selected>{{ tag.name }}</option>
+            {% else %}
+                <option value="{{ tag.id }}">{{ tag.name }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <br>
+        <input class="btn btn-success" type="submit" value="Update">
+        <a class="btn btn-danger" href="{% url 'posts:delete' post.id %}">Delete</a>
+        <a class="btn btn-light" href="{% url 'posts:list' %}">Cancel</a>
+      </fieldset>
+    </form>
+    </div>
+{% endblock content %}
