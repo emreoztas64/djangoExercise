@@ -26,6 +26,5 @@ def post(request):
     )
     post.save()
     tags = request.POST.getlist("tags")
-    print(tags)
     post.tags.set(tags)
     return redirect(reverse("posts:list"))
