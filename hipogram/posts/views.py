@@ -9,7 +9,21 @@ from .models import Post, Tag
 def post_list_view(request):
     posts = Post.objects.all().order_by("-creation_datetime")
     paginator = Paginator(posts, 5)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
+    posts = paginator.get_page(page_number)
+    return render(request, "post_list.html", {'posts': posts})
+
+def user_list_view(request, username):
+    posts = Post.objects.filter(created_by__username=username).order_by("-creation_datetime")
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get("page")
+    posts = paginator.get_page(page_number)
+    return render(request, "post_list.html", {'posts': posts})
+
+def tag_list_view(request, tag):
+    posts = Post.objects.filter(tags__name=tag).order_by("-creation_datetime")
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get("page")
     posts = paginator.get_page(page_number)
     return render(request, "post_list.html", {'posts': posts})
 
